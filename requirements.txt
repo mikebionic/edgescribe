@@ -1,0 +1,12 @@
+# Core: transcription engine
+faster-whisper>=1.2.0
+
+# GUI
+gradio>=4.0.0
+
+# Speaker diarization (optional)
+simple-diarizer>=0.0.15
+speechbrain>=1.0.0
+scikit-learn>=1.0.0
+torch>=2.0.0
+torchaudio>=2.0.0
