@@ -459,8 +459,8 @@ with gr.Blocks(
                 )
                 output_dir = gr.Textbox(
                     label="Папка для сохранения (оставьте пустым = только скачивание)",
-                    placeholder="/home/mike/Videos/obs/Transcribe",
-                    value="/home/mike/Videos/obs/Transcribe",
+                    placeholder="e.g. ~/transcripts (leave empty for download only)",
+                    value="",
                 )
 
             with gr.Accordion("Определение спикеров", open=True):

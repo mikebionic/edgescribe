@@ -1,0 +1,24 @@
+[project]
+name = "local-transcribe"
+version = "1.0.0"
+description = "Private, local, offline audio & video transcription"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.9"
+dependencies = [
+    "faster-whisper>=1.2.0",
+    "gradio>=4.0.0",
+]
+
+[project.optional-dependencies]
+diarize = [
+    "simple-diarizer>=0.0.15",
+    "speechbrain>=1.0.0",
+    "scikit-learn>=1.0.0",
+    "torch>=2.0.0",
+    "torchaudio>=2.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/mj-weshh/local-transcribe"
+Issues = "https://github.com/mj-weshh/local-transcribe/issues"
