@@ -33,7 +33,7 @@ The technology to do this locally has existed for a while (OpenAI's Whisper), bu
 
 ## What I Built
 
-**local-transcribe** - an open-source tool with three interfaces:
+**edgescribe** - an open-source tool with three interfaces:
 
 ### 1. GUI (for everyone)
 
@@ -170,8 +170,8 @@ After the initial setup (which downloads the model ~1.5 GB), you can disconnect 
 ## Setup (5 minutes)
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/local-transcribe.git
-cd local-transcribe
+git clone https://github.com/mikebionic/edgescribe.git
+cd edgescribe
 chmod +x setup.sh
 ./setup.sh
 ```
@@ -211,9 +211,9 @@ Requirements:
 
 ---
 
-**The bottom line**: your voice recordings are some of the most personal data you have. You shouldn't have to send them to a corporation to get a text file. With `local-transcribe`, you don't have to.
+**The bottom line**: your voice recordings are some of the most personal data you have. You shouldn't have to send them to a corporation to get a text file. With `edgescribe`, you don't have to.
 
-[GitHub Repository](https://github.com/YOUR_USERNAME/local-transcribe) | MIT License
+[GitHub Repository](https://github.com/mikebionic/edgescribe)
 
 ---
 

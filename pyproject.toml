@@ -1,5 +1,5 @@
 [project]
-name = "local-transcribe"
+name = "edgescribe"
 version = "1.0.0"
 description = "Private, local, offline audio & video transcription"
 readme = "README.md"
@@ -20,5 +20,5 @@ diarize = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/mj-weshh/local-transcribe"
-Issues = "https://github.com/mj-weshh/local-transcribe/issues"
+Homepage = "https://github.com/mikebionic/edgescribe"
+Issues = "https://github.com/mikebionic/edgescribe/issues"

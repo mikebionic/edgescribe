@@ -1,5 +1,5 @@
 <p align="center">
-  <h1 align="center">local-transcribe</h1>
+  <h1 align="center">edgescribe</h1>
   <p align="center">
     Private, local, offline audio & video transcription.<br>
     No cloud. No API keys. No data leaves your machine.
@@ -33,7 +33,7 @@
 
 Every time you upload audio to a cloud transcription service (TurboScribe, Otter.ai, 11 Labs), your recordings end up in someone else's database. Personal conversations, meetings, interviews - stored on servers you don't control.
 
-**local-transcribe** runs entirely on your computer. Your audio never leaves your machine.
+**edgescribe** runs entirely on your computer. Your audio never leaves your machine.
 
 ```
 Your audio ──> [YOUR computer] ──> .txt / .srt files
@@ -113,8 +113,8 @@ sudo apt update && sudo apt install ffmpeg
 
 ```bash
 # 1. Clone
-git clone https://github.com/mj-weshh/local-transcribe.git
-cd local-transcribe
+git clone https://github.com/mikebionic/edgescribe.git
+cd edgescribe
 
 # 2. Setup (creates venv, installs deps, downloads model)
 make setup
@@ -301,7 +301,7 @@ Auto-detection works well. For best results, specify manually:
 ## Project Structure
 
 ```
-local-transcribe/
+edgescribe/
 ├── transcribe.py     # CLI: batch transcription
 ├── diarize.py        # CLI: speaker identification
 ├── gui.py            # Web GUI (Gradio, localhost:7860)

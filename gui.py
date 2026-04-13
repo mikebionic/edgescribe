@@ -140,9 +140,6 @@ def merge_segments_into_paragraphs(segments, diar_labels, max_gap=1.5, max_len=3
     return merged
 
 
-# ═══════════════════════════════════════
-# Обработка с yield (streaming progress)
-# ═══════════════════════════════════════
 
 def transcribe_batch(
     audio_files,
@@ -165,7 +162,6 @@ def transcribe_batch(
     else:
         paths = [audio_files.name if hasattr(audio_files, "name") else str(audio_files)]
 
-    # Определяем директорию для сохранения
     save_dir = output_dir.strip() if output_dir and output_dir.strip() else ""
     if save_dir and not Path(save_dir).exists():
         try:

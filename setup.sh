@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# setup.sh - One-command installation for local-transcribe
+# setup.sh - One-command installation for edgescribe
 #
 # Usage:
 #   chmod +x setup.sh
@@ -21,7 +21,7 @@ fail()  { echo -e "${RED}[ERROR]${NC} $*"; exit 1; }
 
 echo ""
 echo "=================================================="
-echo "  local-transcribe: setup"
+echo "  edgescribe: setup"
 echo "  Private, local, offline audio transcription"
 echo "=================================================="
 echo ""
