@@ -23,9 +23,6 @@ from pathlib import Path
 import gradio as gr
 
 
-# ═══════════════════════════════════════
-# Предзагрузка модели при старте
-# ═══════════════════════════════════════
 
 print("Загрузка модели Whisper large-v3-turbo в RAM...")
 t0 = time.time()
@@ -45,10 +42,6 @@ def get_whisper_model(model_name: str):
     return WHISPER_MODELS[model_name]
 
 
-# ═══════════════════════════════════════
-# Утилиты
-# ═══════════════════════════════════════
-
 def get_duration(path: str) -> float:
     try:
         r = subprocess.run(
@@ -62,7 +55,6 @@ def get_duration(path: str) -> float:
 
 
 def convert_to_wav(audio_path: str) -> str:
-    """Конвертирует аудио в WAV через ffmpeg (нужно для simple_diarizer)."""
     wav_path = audio_path.rsplit(".", 1)[0] + "_converted.wav"
     subprocess.run(
         ["ffmpeg", "-y", "-i", audio_path, "-ar", "16000", "-ac", "1", wav_path],
@@ -110,7 +102,6 @@ def group_by_interval(segments, interval):
 
 
 def merge_segments_into_paragraphs(segments, diar_labels, max_gap=1.5, max_len=300):
-    """Склеивает короткие сегменты в абзацы по спикеру и паузам."""
     if not segments:
         return segments
 

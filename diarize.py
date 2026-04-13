@@ -57,7 +57,7 @@ def find_audio_files(input_path: Path) -> list[Path]:
 
 
 def diarize_simple(audio_path: str, num_speakers: int) -> list[dict]:
-    """Diarization via simple_diarizer (ECAPA-TDNN + Silero VAD)."""
+    """ECAPA-TDNN + Silero VAD"""
     # Convert to WAV first (simple_diarizer requires it)
     wav_path = convert_to_wav(audio_path)
     if not wav_path:
@@ -77,7 +77,7 @@ def diarize_simple(audio_path: str, num_speakers: int) -> list[dict]:
 
 
 def diarize_speechbrain(audio_path: str, num_speakers: int) -> list[dict]:
-    """Diarization via SpeechBrain ECAPA-TDNN + sklearn clustering."""
+    """ECAPA-TDNN + sklearn clustering"""
     import numpy as np
     import torch
     import torchaudio
