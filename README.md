@@ -2,6 +2,11 @@
 
 Local audio/video transcription. Runs on your machine, offline, no API keys.
 
+![alt text](presentation/docs_interface.png)
+
+
+## [Click here to view the Presentation](presentation/Local_Whisper_Blueprint.pdf)
+
 ## Setup
 
 Requires Python 3.9+, FFmpeg, 8 GB RAM.
@@ -105,3 +110,5 @@ make transcribe    - Transcribe all audio in current dir
 make clean         - Remove venv and caches
 make clean-models  - Remove downloaded models
 ```
+
+![alt text](presentation/docs_thevision.png)
