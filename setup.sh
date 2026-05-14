@@ -70,9 +70,9 @@ fi
 
 PIP="$VENV/bin/pip"
 
-info "Installing dependencies..."
+info "Installing dependencies (includes PyTorch ~4 GB — this may take several minutes)..."
 $PIP install --upgrade pip --quiet
-$PIP install -r requirements.txt --quiet 2>&1 | tail -1
+$PIP install -r requirements.txt
 ok "Dependencies installed"
 
 # --- Model preload ---
@@ -94,11 +94,10 @@ echo ""
 echo "  # Transcribe a file:"
 echo "  $VENV/bin/python transcribe.py --input recording.mp3"
 echo ""
-echo "  # Launch GUI (browser):"
-echo "  $VENV/bin/python gui.py"
+echo "  # Launch web UI:"
+echo "  make serve"
+echo "  # or: $VENV/bin/python api.py"
 echo ""
 echo "  # Identify speakers:"
 echo "  $VENV/bin/python diarize.py --input recording.mp3 --speakers 2"
-echo ""
-echo "  All processing is LOCAL. Nothing is sent to the internet."
 echo ""

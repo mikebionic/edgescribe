@@ -1,0 +1,180 @@
+{
+  "info": {
+    "name": "edgescribe API",
+    "description": "Local audio transcription REST API. Set BASE_URL variable to your server address.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": "http://localhost:8000",
+      "description": "Server address. Change to your server IP/domain."
+    },
+    {
+      "key": "API_KEY",
+      "value": "",
+      "description": "X-API-Key header value. Leave empty if no auth configured."
+    },
+    {
+      "key": "JOB_ID",
+      "value": "",
+      "description": "Auto-filled after POST /v1/transcribe"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": "{{BASE_URL}}/v1/health",
+        "description": "Check if the API is running and see loaded models."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Status ok', () => pm.expect(pm.response.json().status).to.eq('ok'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transcribe Audio File",
+      "request": {
+        "method": "POST",
+        "url": "{{BASE_URL}}/v1/transcribe",
+        "description": "Upload an audio or video file for transcription. Returns job_id immediately — the transcription runs in the background.",
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "{{API_KEY}}",
+            "description": "Only needed if API key is configured"
+          }
+        ],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": "",
+              "description": "Audio/video file: MP3, WAV, FLAC, M4A, OGG, MP4, MKV..."
+            },
+            {
+              "key": "language",
+              "value": "auto",
+              "type": "text",
+              "description": "Language code: auto, ru, en, de, fr, es, zh, ja, etc."
+            },
+            {
+              "key": "model",
+              "value": "large-v3-turbo",
+              "type": "text",
+              "description": "Whisper model: large-v3-turbo (default), large-v3, medium, small, base"
+            },
+            {
+              "key": "timestamps",
+              "value": "auto",
+              "type": "text",
+              "description": "Timestamps mode: auto (by phrase), none, or seconds (5, 10, 30)"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "const json = pm.response.json();",
+              "pm.test('Has job_id', () => pm.expect(json.job_id).to.be.a('string'));",
+              "pm.collectionVariables.set('JOB_ID', json.job_id);",
+              "console.log('Job ID saved:', json.job_id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get Job Status",
+      "request": {
+        "method": "GET",
+        "url": "{{BASE_URL}}/v1/jobs/{{JOB_ID}}",
+        "description": "Get transcription job status and result.\n\nStatus values:\n- queued: waiting to start\n- processing: transcription in progress\n- done: finished, result.txt and result.srt are available\n- failed: error occurred, check 'error' field",
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "{{API_KEY}}"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "const json = pm.response.json();",
+              "console.log('Job status:', json.status);",
+              "if (json.status === 'done') {",
+              "    console.log('Transcript preview:', json.result.txt.substring(0, 200));",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "List All Jobs",
+      "request": {
+        "method": "GET",
+        "url": "{{BASE_URL}}/v1/jobs",
+        "description": "List all jobs (without result text to keep response small).",
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "{{API_KEY}}"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Delete Job",
+      "request": {
+        "method": "DELETE",
+        "url": "{{BASE_URL}}/v1/jobs/{{JOB_ID}}",
+        "description": "Delete a completed or failed job. Cannot delete a running job.",
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "{{API_KEY}}"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Deleted', () => pm.expect(pm.response.json().deleted).to.be.true);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "API Docs (Swagger UI)",
+      "request": {
+        "method": "GET",
+        "url": "{{BASE_URL}}/docs",
+        "description": "Open in browser to see interactive Swagger documentation."
+      }
+    }
+  ]
+}

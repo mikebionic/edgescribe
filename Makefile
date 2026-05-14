@@ -1,4 +1,4 @@
-.PHONY: setup install gui transcribe clean clean-models help
+.PHONY: setup install serve transcribe clean clean-models help
 
 VENV   := .venv
 PY     := $(VENV)/bin/python
@@ -16,10 +16,10 @@ $(VENV)/bin/activate:
 	$(PIP) install --upgrade pip --quiet
 
 install: $(VENV)/bin/activate ## Install dependencies only (no model download)
-	$(PIP) install -r requirements.txt --quiet
+	$(PIP) install -r requirements.txt
 
-gui: ## Launch web GUI (http://localhost:7860)
-	$(PY) gui.py
+serve: ## Launch API + UI (http://localhost:8000)
+	$(PY) api.py
 
 transcribe: ## Transcribe all audio in current directory
 	$(PY) transcribe.py --input .

@@ -1,11 +1,8 @@
-# Core: transcription engine
 faster-whisper>=1.2.0
-
-# GUI
-gradio>=4.0.0
-
-# Speaker diarization (optional)
-simple-diarizer>=0.0.15
+fastapi>=0.110.0
+uvicorn>=0.29.0
+python-multipart>=0.0.6
+simple-diarizer
 speechbrain>=1.0.0
 scikit-learn>=1.0.0
 torch>=2.0.0
