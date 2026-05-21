@@ -463,30 +463,41 @@ async function loadJobsList() {
 }
 
 async function viewJob(jobId) {
-  const job = allJobs.find(j => j.job_id === jobId);
-  if (!job) return;
+  const jobMeta = allJobs.find(j => j.job_id === jobId);
+  if (!jobMeta) return;
 
   selectedJobId = jobId;
 
-  if (job.status !== "done") {
+  if (jobMeta.status !== "done") {
     resultCard.classList.add("hidden");
     resultPlaceholder.classList.remove("hidden");
-    showAlert(`Job status: ${job.status}${job.error ? ' - ' + job.error : ''}`, job.status === 'failed' ? 'error' : 'info');
+    showAlert(`Job status: ${jobMeta.status}${jobMeta.error ? ' - ' + jobMeta.error : ''}`, jobMeta.status === 'failed' ? 'error' : 'info');
     return;
   }
 
-  resultPlaceholder.classList.add("hidden");
-  resultCard.classList.remove("hidden");
-  resultTxt.value = job.result.txt;
-  resultSrt.value = job.result.srt;
+  // Fetch full job details (including result)
+  try {
+    const res = await fetch(`/v1/jobs/${jobId}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const job = await res.json();
 
-  // Reset to text tab view
-  document.querySelectorAll(".result-tabs .tab").forEach(t => t.classList.remove("active"));
-  document.querySelector(".result-tabs .tab[data-tab='txt']").classList.add("active");
-  resultTxt.classList.remove("hidden");
-  resultSrt.classList.add("hidden");
+    resultPlaceholder.classList.add("hidden");
+    resultCard.classList.remove("hidden");
+    resultTxt.value = job.result.txt;
+    resultSrt.value = job.result.srt;
 
-  showAlert(`Viewing: ${escapeHtml(job.filename || 'Unnamed')}`, "success");
+    // Reset to text tab view
+    document.querySelectorAll(".result-tabs .tab").forEach(t => t.classList.remove("active"));
+    document.querySelector(".result-tabs .tab[data-tab='txt']").classList.add("active");
+    resultTxt.classList.remove("hidden");
+    resultSrt.classList.add("hidden");
+
+    showAlert(`Viewing: ${escapeHtml(job.filename || 'Unnamed')}`, "success");
+  } catch (err) {
+    resultCard.classList.add("hidden");
+    resultPlaceholder.classList.remove("hidden");
+    showAlert(`Failed to load transcript: ${err.message}`, "error");
+  }
 }
 
 function escapeHtml(text) {
