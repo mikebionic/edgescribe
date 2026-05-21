@@ -151,10 +151,12 @@ def download(job_id: str, fmt: str):
         raise HTTPException(status_code=400, detail="Format must be txt or srt")
     content = job["result"][fmt]
     stem = Path(job.get("filename", "transcript")).stem
+    from urllib.parse import quote
+    filename = f"{stem}.{fmt}"
     return Response(
         content=content,
         media_type="text/plain; charset=utf-8",
-        headers={"Content-Disposition": f'attachment; filename="{stem}.{fmt}"'},
+        headers={"Content-Disposition": f'attachment; filename="{quote(filename)}"'},
     )
 
 
