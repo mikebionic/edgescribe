@@ -519,6 +519,12 @@ header { margin-bottom: 24px; }
   border-color: var(--accent);
 }
 
+.job-item.active {
+  background: var(--surface-2);
+  border-color: var(--accent);
+  box-shadow: 0 0 12px rgba(124, 106, 239, 0.2);
+}
+
 .job-header {
   display: flex;
   justify-content: space-between;

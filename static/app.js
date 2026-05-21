@@ -451,7 +451,11 @@ async function loadJobsList() {
     `).join('');
 
     document.querySelectorAll(".job-item").forEach(item => {
-      item.addEventListener("click", () => viewJob(item.dataset.jobId));
+      item.addEventListener("click", () => {
+        document.querySelectorAll(".job-item").forEach(i => i.classList.remove("active"));
+        item.classList.add("active");
+        viewJob(item.dataset.jobId);
+      });
     });
   } catch (err) {
     jobsList.innerHTML = `<p class="error">Failed to load: ${escapeHtml(err.message)}</p>`;
@@ -465,6 +469,8 @@ async function viewJob(jobId) {
   selectedJobId = jobId;
 
   if (job.status !== "done") {
+    resultCard.classList.add("hidden");
+    resultPlaceholder.classList.remove("hidden");
     showAlert(`Job status: ${job.status}${job.error ? ' - ' + job.error : ''}`, job.status === 'failed' ? 'error' : 'info');
     return;
   }
@@ -474,8 +480,13 @@ async function viewJob(jobId) {
   resultTxt.value = job.result.txt;
   resultSrt.value = job.result.srt;
 
-  // Scroll right panel into view or show notice
-  showAlert(`Viewing: ${escapeHtml(job.filename || 'Unnamed')}`, "info");
+  // Reset to text tab view
+  document.querySelectorAll(".result-tabs .tab").forEach(t => t.classList.remove("active"));
+  document.querySelector(".result-tabs .tab[data-tab='txt']").classList.add("active");
+  resultTxt.classList.remove("hidden");
+  resultSrt.classList.add("hidden");
+
+  showAlert(`Viewing: ${escapeHtml(job.filename || 'Unnamed')}`, "success");
 }
 
 function escapeHtml(text) {
