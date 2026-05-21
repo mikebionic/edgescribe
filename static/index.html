@@ -42,6 +42,10 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
           Record
         </button>
+        <button class="mode-tab" data-mode="history">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><polyline points="12 7 12 12 16 14"/></svg>
+          History
+        </button>
       </div>
 
       <!-- File upload -->
@@ -70,6 +74,21 @@
             <span class="mic-timer hidden" id="micTimer">00:00</span>
           </div>
           <canvas id="waveCanvas" width="400" height="40"></canvas>
+        </div>
+      </div>
+
+      <!-- History -->
+      <div id="historyMode" class="hidden">
+        <div class="history-panel">
+          <div class="history-controls">
+            <button id="refreshBtn" class="history-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36M20.49 15a9 9 0 0 1-14.85 3.36"/></svg>
+              Refresh
+            </button>
+          </div>
+          <div class="jobs-list" id="jobsList">
+            <p class="loading">Loading jobs...</p>
+          </div>
         </div>
       </div>
 

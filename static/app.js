@@ -25,6 +25,8 @@ let currentIdx   = 0;
 let currentJobId = null;
 let pollTimer    = null;
 let allResults   = { txt: [], srt: [] };
+let allJobs      = [];  // history
+let selectedJobId = null;  // for history view
 
 // Smooth progress interpolation
 let displayPct = 0;
@@ -129,6 +131,8 @@ document.querySelectorAll(".mode-tab").forEach(btn => {
     const mode = btn.dataset.mode;
     $("#fileMode").classList.toggle("hidden", mode !== "file");
     $("#micMode").classList.toggle("hidden", mode !== "mic");
+    $("#historyMode").classList.toggle("hidden", mode !== "history");
+    if (mode === "history") loadJobsList();
   });
 });
 
@@ -395,9 +399,10 @@ $("#downloadTxt").addEventListener("click", () => download("txt"));
 $("#downloadSrt").addEventListener("click", () => download("srt"));
 
 function download(fmt) {
-  if (!currentJobId) return;
+  const jobId = selectedJobId || currentJobId;
+  if (!jobId) return;
   const a = document.createElement("a");
-  a.href = `/v1/jobs/${currentJobId}/download/${fmt}`;
+  a.href = `/v1/jobs/${jobId}/download/${fmt}`;
   a.click();
 }
 
@@ -413,6 +418,71 @@ $("#copyBtn").addEventListener("click", () => {
     }, 1500);
   });
 });
+
+// ===== HISTORY =====
+$("#refreshBtn").addEventListener("click", loadJobsList);
+
+async function loadJobsList() {
+  const jobsList = $("#jobsList");
+  jobsList.innerHTML = '<p class="loading">Loading jobs...</p>';
+
+  try {
+    const res = await fetch("/v1/jobs");
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    allJobs = await res.json();
+
+    if (!allJobs || allJobs.length === 0) {
+      jobsList.innerHTML = '<p class="empty">No transcriptions yet</p>';
+      return;
+    }
+
+    jobsList.innerHTML = allJobs.map(job => `
+      <div class="job-item" data-job-id="${job.job_id}">
+        <div class="job-header">
+          <span class="job-name">${escapeHtml(job.filename || 'Unnamed')}</span>
+          <span class="job-status job-status-${job.status}">${job.status}</span>
+        </div>
+        <div class="job-meta">
+          <span>${new Date(job.created_at * 1000).toLocaleDateString()}</span>
+          ${job.status === 'done' ? `<span>${job.segments_count || 0} segments</span>` : ''}
+          ${job.status === 'failed' ? `<span class="error">${escapeHtml(job.error || 'Unknown error')}</span>` : ''}
+        </div>
+      </div>
+    `).join('');
+
+    document.querySelectorAll(".job-item").forEach(item => {
+      item.addEventListener("click", () => viewJob(item.dataset.jobId));
+    });
+  } catch (err) {
+    jobsList.innerHTML = `<p class="error">Failed to load: ${escapeHtml(err.message)}</p>`;
+  }
+}
+
+async function viewJob(jobId) {
+  const job = allJobs.find(j => j.job_id === jobId);
+  if (!job) return;
+
+  selectedJobId = jobId;
+
+  if (job.status !== "done") {
+    showAlert(`Job status: ${job.status}${job.error ? ' - ' + job.error : ''}`, job.status === 'failed' ? 'error' : 'info');
+    return;
+  }
+
+  resultPlaceholder.classList.add("hidden");
+  resultCard.classList.remove("hidden");
+  resultTxt.value = job.result.txt;
+  resultSrt.value = job.result.srt;
+
+  // Scroll right panel into view or show notice
+  showAlert(`Viewing: ${escapeHtml(job.filename || 'Unnamed')}`, "info");
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
 
 // ===== UI HELPERS =====
 function showProgress(label, pct, meta) {

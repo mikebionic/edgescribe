@@ -463,3 +463,122 @@ header { margin-bottom: 24px; }
 #resultTxt:focus, #resultSrt:focus {
   background: rgba(124, 106, 239, 0.03);
 }
+
+/* -- History Panel -- */
+.history-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.history-controls {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+
+.history-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.history-btn:hover {
+  background: var(--surface-2);
+  border-color: var(--border-hover);
+}
+
+.jobs-list {
+  overflow-y: auto;
+  flex: 1;
+}
+
+.job-item {
+  padding: 12px;
+  margin-bottom: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.job-item:hover {
+  background: var(--surface-2);
+  border-color: var(--accent);
+}
+
+.job-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  gap: 8px;
+}
+
+.job-name {
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+.job-status {
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.job-status-done {
+  background: var(--green-dim);
+  color: var(--green);
+}
+
+.job-status-processing {
+  background: rgba(124, 106, 239, 0.15);
+  color: var(--accent);
+}
+
+.job-status-queued {
+  background: rgba(124, 106, 239, 0.1);
+  color: var(--accent-2);
+}
+
+.job-status-failed {
+  background: var(--red-dim);
+  color: var(--red);
+}
+
+.job-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.jobs-list .loading,
+.jobs-list .empty {
+  padding: 32px 16px;
+  text-align: center;
+  color: var(--text-2);
+  font-size: 13px;
+}
+
+.jobs-list .error {
+  color: var(--red);
+}
